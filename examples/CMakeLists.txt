@@ -1,2 +1,3 @@
-add_subdirectory(server)
-add_subdirectory(client)
+add_subdirectory(domainsocket)
+add_subdirectory(transport)
+add_subdirectory(mqttclient)

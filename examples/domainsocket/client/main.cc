@@ -1,7 +1,7 @@
-#include "domain_socket/client.h"
+#include "domainsocket/client.h"
 
 int main(int argc, char** argv) {
-    DomainSocket::DomainSocketClient client("/tmp/domain_socket_example");
+    DomainSocket::Client client("/tmp/domain_socket_example");
 
     if (!client.Connect()) {
         printf("Failed to connect to the server.\n");
@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
     }
 
     printf("Connected to the server.\n");
-    std::vector<uint8_t> message = {'H', 'e', 'l', 'l', 'o', ' ', 'S', 'e', 'r', 'v', 'e', 'r'};
+    std::string message = "Hello from client!";
     if (!client.SendMsg(message)) {
         printf("Failed to send message.\n");
         return 1;
