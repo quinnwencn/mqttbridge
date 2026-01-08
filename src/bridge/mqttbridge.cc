@@ -42,6 +42,9 @@ MqttBridge::MqttBridge(const Config& config) :
 
 MqttBridge::~MqttBridge() {
     Stop();
+    if (loopThread_.joinable()) {
+        loopThread_.join();
+    }
 }
 
 bool MqttBridge::Start() {
@@ -84,10 +87,20 @@ bool MqttBridge::Start() {
     return true;
 }
 
+void MqttBridge::StartLoop() {
+    loopThread_ = std::thread([this]() {
+        LOG_TRACE("Starting MQTT Bridge loop...");
+        Start();
+    });
+}
+
 void MqttBridge::Stop() {
-    running_ = false;
-    transport_->Stop();
-    mqttClient_->Stop();
+    if (running_) {
+        running_ = false;
+        LOG_INFO("Stopping MQTT Bridge...");
+        transport_->Stop();
+        mqttClient_->Stop();
+    }
 }
 
 void MqttBridge::SignalHandler(int sig) {

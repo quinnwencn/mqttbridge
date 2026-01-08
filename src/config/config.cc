@@ -85,6 +85,8 @@ void Config::LoadFromToml(const std::string& filePath) {
     transportConfig_.LoadFromTable(*tbl.at("transport").as_table());
     mqttConfig_.LoadFromTable(*tbl.at("mqtt").as_table());
     logConfig_.LoadFromTable(*tbl.at("log").as_table());
+    
+    Logger::Init(logConfig_);
 }
 
 }  // namespace MqttBridge

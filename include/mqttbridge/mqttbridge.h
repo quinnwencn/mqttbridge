@@ -20,6 +20,7 @@ public:
     ~MqttBridge();
 
     bool Start();
+    void StartLoop();
     void Stop();
 
 private:
@@ -32,6 +33,7 @@ private:
     BlockingQueue<Message> mqttToTransportQueue_;
     BlockingQueue<Message> transportToMqttQueue_;
     bool running_ = false;
+    std::thread loopThread_;
 };
 
 } // namespace MqttBridge
