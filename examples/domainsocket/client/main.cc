@@ -1,7 +1,7 @@
 #include "domainsocket/client.h"
 
 int main(int argc, char** argv) {
-    DomainSocket::Client client("/tmp/domain_socket_example");
+    DomainSocket::Client client("/tmp/mqttbridge_subscribe.sock");
 
     if (!client.Connect()) {
         printf("Failed to connect to the server.\n");
@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
     }
 
     printf("Connected to the server.\n");
-    std::string message = "Hello from client!";
+    std::string message = "Hello from client, test hook!";
     if (!client.SendMsg(message)) {
         printf("Failed to send message.\n");
         return 1;

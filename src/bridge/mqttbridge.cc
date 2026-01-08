@@ -15,16 +15,19 @@ MqttBridge::MqttBridge(const Config& config) :
     mqttClient_(std::make_unique<MosquittoMqttClient>(config.Mqtt())),
     transport_(CreateTransport(config.Transport().Type(), config.Transport())),
     mqttToTransportQueue_(),
-    transportToMqttQueue_() {
+    transportToMqttQueue_(),
+    running_(false) {
 
     mqttClient_->SetMessageCallback(
         [this](const Message& msg) {
+            LOG_TRACE("Received message from MQTT on topic {}:", msg.topic, msg.json);
             mqttToTransportQueue_.Push(msg);
         }
     );
 
     transport_->SetMessageCallback(
         [this](const std::string_view& msgStr) {
+            LOG_TRACE("Received message from Transport: {}", msgStr);
             Message msg;
             msg.json = std::string(msgStr);
             transportToMqttQueue_.Push(msg);
@@ -55,7 +58,8 @@ bool MqttBridge::Start() {
     signal(SIGINT, &MqttBridge::SignalHandler);
     signal(SIGTERM, &MqttBridge::SignalHandler);
 
-    while (true) {
+    running_ = true;
+    while (running_) {
         Message msgFromMqtt;
         bool mqttToTransportQueueNotEmpty = mqttToTransportQueue_.TryPop(msgFromMqtt);
         if (mqttToTransportQueueNotEmpty) {
@@ -81,6 +85,7 @@ bool MqttBridge::Start() {
 }
 
 void MqttBridge::Stop() {
+    running_ = false;
     transport_->Stop();
     mqttClient_->Stop();
 }

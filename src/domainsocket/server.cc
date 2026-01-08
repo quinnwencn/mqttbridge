@@ -61,7 +61,7 @@ void Server::Stop() {
 void Server::RecvLoop() {
     while (running_.load()) {
         char buffer[1024];
-        ssize_t bytesRead = recv(serverSocket_, buffer, sizeof(buffer), 0);\
+        ssize_t bytesRead = recv(serverSocket_, buffer, sizeof(buffer), 0);
         if (bytesRead <= 0) {
             break;
         }

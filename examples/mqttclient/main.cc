@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
         port = 1883
         client_id = "example_mqtt_client"
         subscribe_topic = "example/subscribe"
-        publish_topic = "example/subscribe"
+        publish_topic = "example/publish"
         enable_tls = false
         verify_peer = false
         qos = 1
@@ -43,9 +43,9 @@ int main(int argc, char** argv) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Wait for connection to establish
     mqttClient.Publish(config.PublishTopic(), Message{config.PublishTopic(), R"({"message": "Hello, MQTT!"})"}, config.Qos(), config.Retain());
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Wait to receive messages
+    std::this_thread::sleep_for(std::chrono::seconds(100)); // Wait to receive messages
     LOG_TRACE("Mqtt client exiting...");
 
-    mqttClient.Stop();
+    // mqttClient.Stop();
     return 0;
 }

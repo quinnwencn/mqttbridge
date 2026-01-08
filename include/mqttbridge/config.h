@@ -50,6 +50,14 @@ public:
     const std::string& SubscribeTopic() const { return subscribeTopic_; }
     const std::string& PublishTopic() const { return publishTopic_; }
 
+    void ChangeSubscribeTopic(const std::string& newTopic) {
+        subscribeTopic_ = newTopic;
+    }
+
+    void ChangePublishTopic(const std::string& newTopic) {
+        publishTopic_ = newTopic;
+    }
+
     void LoadFromTable(const toml::table &tbl) override;
     void WriteToLog(std::string_view name) override;
 
@@ -101,6 +109,14 @@ public:
     const LogConfig& Log() const { return logConfig_; }
     const MqttConfig& Mqtt() const { return mqttConfig_; }
     const TransportConfig& Transport() const { return transportConfig_; }
+
+    void ChangeSubscribeTopic(const std::string& newTopic) {
+        mqttConfig_.ChangeSubscribeTopic(newTopic);
+    }
+
+    void ChangePublishTopic(const std::string& newTopic) {
+        mqttConfig_.ChangePublishTopic(newTopic);
+    }
 
     void LoadFromToml(const std::string& filePath);
 

@@ -61,7 +61,6 @@ public:
     }
 
     size_t Size() {
-        std::lock_guard<std::mutex> lock(mutex_);
         return tail_ - front_;
     }
 

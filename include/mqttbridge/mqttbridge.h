@@ -31,6 +31,7 @@ private:
     std::unique_ptr<ITransport> transport_;
     BlockingQueue<Message> mqttToTransportQueue_;
     BlockingQueue<Message> transportToMqttQueue_;
+    bool running_ = false;
 };
 
 } // namespace MqttBridge
