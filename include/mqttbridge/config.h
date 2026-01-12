@@ -96,6 +96,7 @@ private:
     std::string nodeName_;
     std::string publishTopic_;
     std::string subscribeTopic_;
+    uint16_t bufferSize_{4096};
 };
 
 class Config {

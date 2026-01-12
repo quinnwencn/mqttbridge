@@ -66,6 +66,7 @@ void TransportConfig::LoadFromTable(const toml::table &tbl) {
     nodeName_ = tbl.at("node_name").value_or("");
     publishTopic_ = tbl.at("publish_topic").value_or("");
     subscribeTopic_ = tbl.at("subscribe_topic").value_or("");
+    bufferSize_ = tbl.at("buffer_size").value_or(4096);
 }
 
 void TransportConfig::WriteToLog(std::string_view name) {
@@ -74,6 +75,7 @@ void TransportConfig::WriteToLog(std::string_view name) {
     LOG_TRACE("node_name = {}", nodeName_);
     LOG_TRACE("publish_topic = {}", publishTopic_);
     LOG_TRACE("subscribe_topic = {}", subscribeTopic_);
+    LOG_TRACE("buffer_size = {}", bufferSize_);
 }
 
 void Config::LoadFromToml(const std::string& filePath) {
