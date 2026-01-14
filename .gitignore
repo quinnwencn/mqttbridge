@@ -2,4 +2,3 @@
 build
 CMakeUserPresets.json
 .venv
-config.toml

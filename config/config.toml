@@ -1,0 +1,24 @@
+[mqtt]
+host = "localhost"
+port = 1883
+client_id = "vdu-LGXC14AA4B1106224"
+subscribe_topic = "diagnostics/Vehicle/LGXC14AA4B1106224"
+publish_topic = "diagnostics/Cloud/"
+enable_tls = true
+verify_peer = true
+qos = 2
+retain = false
+ca_cert = "path_to_example.crt"
+client_cert = "path_to_example_client.crt"
+client_key = "path_to_client_key.key"
+
+[log]
+log_dir = "/tmp"
+level = 0
+
+[transport]
+node_name = "domainsocket"
+type = "domainsocket"
+publish_topic = "/tmp/vtest_reportdata.sock"
+subscribe_topic = "/tmp/vtest_cmd.sock"
+buffer_size = 2000
