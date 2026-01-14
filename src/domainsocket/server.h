@@ -13,7 +13,9 @@ public:
     using MessageCallback = std::function<void(std::string_view)>;
 
     Server(std::string_view socketPath);
+    Server(std::string_view socketPath, uint16_t bufferSize);
     Server(std::string_view socketPath, MessageCallback messageCallback);
+    Server(std::string_view socketPath, uint16_t bufferSize, MessageCallback messageCallback);
     ~Server();
 
     bool Start();
@@ -26,6 +28,7 @@ private:
     void RecvLoop();
 
     int serverSocket_;
+    uint16_t bufferSize_{2048};
     std::string socketPath_;
     std::atomic<bool> running_{false};
     std::thread recvThread_;

@@ -87,6 +87,7 @@ public:
     const std::string& NodeName() const { return nodeName_; }
     const std::string& PublishTopic() const { return publishTopic_; }
     const std::string& SubscribeTopic() const { return subscribeTopic_; }
+    uint16_t BufferSize() const { return bufferSize_; }
 
     void LoadFromTable(const toml::table &tbl) override;
     void WriteToLog(std::string_view name) override;

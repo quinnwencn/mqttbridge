@@ -10,8 +10,14 @@ namespace DomainSocket {
 Server::Server(std::string_view socketPath) :
     socketPath_(socketPath), serverSocket_(-1), messageCallback_(nullptr) {}
 
+Server::Server(std::string_view socketPath, uint16_t bufferSize) :
+    socketPath_(socketPath), serverSocket_(-1), bufferSize_(bufferSize), messageCallback_(nullptr) {}
+
 Server::Server(std::string_view socketPath, MessageCallback messageCallback) :
     socketPath_(socketPath), serverSocket_(-1), messageCallback_(messageCallback) {}
+
+Server::Server(std::string_view socketPath, uint16_t bufferSize, MessageCallback messageCallback) :
+    socketPath_(socketPath), serverSocket_(-1), bufferSize_(bufferSize), messageCallback_(messageCallback) {}
 
 Server::~Server() {
     Stop();
@@ -60,14 +66,14 @@ void Server::Stop() {
 
 void Server::RecvLoop() {
     while (running_.load()) {
-        char buffer[1024];
-        ssize_t bytesRead = recv(serverSocket_, buffer, sizeof(buffer), 0);
+        std::vector<char> buffer(bufferSize_);
+        ssize_t bytesRead = recv(serverSocket_, buffer.data(), bufferSize_, 0);
         if (bytesRead <= 0) {
             break;
         }
 
         if (messageCallback_) {
-            std::string_view message(buffer, static_cast<size_t>(bytesRead));
+            std::string_view message(buffer.data(), static_cast<size_t>(bytesRead));
             messageCallback_(message);
         }
     }

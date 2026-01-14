@@ -3,11 +3,11 @@
 namespace MqttBridge {
 
 DomainSocketTransport::DomainSocketTransport(TransportConfig config) : 
-    server_(config.SubscribeTopic()), 
+    server_(config.SubscribeTopic(), config.BufferSize()), 
     client_(config.PublishTopic()) {}
 
 DomainSocketTransport::DomainSocketTransport(TransportConfig config, MessageCallback cb) : 
-    server_(config.SubscribeTopic(), cb), 
+    server_(config.SubscribeTopic(), config.BufferSize(), cb), 
     client_(config.PublishTopic()) {}
 
 bool DomainSocketTransport::Start() {

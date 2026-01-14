@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <memory>
 #include <functional>
+#include <thread>
 
 #include "mqttbridge/imqttclient.h"
 #include "mqttbridge/itransport.h"
