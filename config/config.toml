@@ -1,16 +1,16 @@
 [mqtt]
-host = "localhost"
+host = "test.ota.tensor.center"
 port = 1883
-client_id = "vdu-LGXC14AA4B1106224"
-subscribe_topic = "diagnostics/Vehicle/LGXC14AA4B1106224"
+client_id = "vdu-LGXC14AA4B1106221"
+subscribe_topic = "diagnostics/Vehicle/LGXC14AA4B1106221"
 publish_topic = "diagnostics/Cloud/"
 enable_tls = true
 verify_peer = true
 qos = 2
 retain = false
-ca_cert = "path_to_example.crt"
-client_cert = "path_to_example_client.crt"
-client_key = "path_to_client_key.key"
+ca_cert = "/userdata/fota/root.crt"
+client_cert = "/userdata/fota/vehicle.crt"
+client_key = "/userdata/fota/vehicle.key"
 
 [log]
 log_dir = "/tmp"
