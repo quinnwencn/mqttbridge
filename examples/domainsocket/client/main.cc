@@ -1,7 +1,12 @@
 #include "domainsocket/client.h"
 
 int main(int argc, char** argv) {
-    DomainSocket::Client client("/tmp/vtest_reportdata.sock");
+    if (argc != 2) {
+        printf("Usage: %s <socket_path>\n", argv[0]);
+        return 1;
+    }
+
+    DomainSocket::Client client(argv[1]);
 
     if (!client.Connect()) {
         printf("Failed to connect to the server.\n");

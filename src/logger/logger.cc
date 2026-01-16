@@ -23,7 +23,7 @@ boost::log::sources::severity_logger<
 void Logger::Init(const MqttBridge::LogConfig& config) {
     const auto& logDir = config.LogDir();
     std::filesystem::create_directories(logDir);
-    auto logFile = logDir / "mqttbridge.log";
+    auto logFile = logDir / "xbridge.log";
 
     logging::add_common_attributes();
     logging::add_file_log(
