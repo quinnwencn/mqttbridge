@@ -15,7 +15,7 @@ class MqttBridge(ConanFile):
     }
 
     def requirements(self):
-        self.requires("boost/1.81.0", transitive_headers=True, transitive_libs=True)
+        self.requires("boost/1.83.0", transitive_headers=True, transitive_libs=True)
         self.requires("tomlplusplus/3.4.0")
         self.requires("fmt/12.1.0")
         self.requires("cli11/2.6.0")
