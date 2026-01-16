@@ -13,12 +13,12 @@ client_cert = "/userdata/fota/vehicle.crt"
 client_key = "/userdata/fota/vehicle.key"
 
 [log]
-log_dir = "/tmp"
+log_dir = "/userdata/xbridge"
 level = 0
 
 [transport]
 node_name = "domainsocket"
 type = "domainsocket"
-publish_topic = "/tmp/vtest_reportdata.sock"
-subscribe_topic = "/tmp/vtest_cmd.sock"
+publish_topic = "/tmp/vtest_cmd.sock"
+subscribe_topic = "/tmp/vtest_reportdata.sock"
 buffer_size = 2000

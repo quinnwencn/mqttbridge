@@ -1,7 +1,7 @@
 #include "domainsocket/client.h"
 
 int main(int argc, char** argv) {
-    DomainSocket::Client client("/tmp/mqttbridge_subscribe.sock");
+    DomainSocket::Client client("/tmp/vtest_reportdata.sock");
 
     if (!client.Connect()) {
         printf("Failed to connect to the server.\n");
