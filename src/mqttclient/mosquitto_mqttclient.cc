@@ -83,7 +83,7 @@ void MosquittoMqttClient::Stop() {
         disconnect();
     }
 
-    loop_stop();
+    loop_stop(true);
 }
 
 bool MosquittoMqttClient::ConfigureTls() {
