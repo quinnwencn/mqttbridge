@@ -19,7 +19,9 @@ MqttBridge::MqttBridge(const Config& config) :
     mqttClient_->SetMessageCallback(
         [this](const Message& msg) {
             LOG_TRACE("Received message from MQTT on topic {}:", msg.topic, msg.json);
-            transport_->Send(msg);
+            if (transport_->Send(msg)) {
+                LOG_TRACE("Forwarded message to Transport");
+            }
         }
     );
 
