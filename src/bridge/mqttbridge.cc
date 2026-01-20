@@ -14,14 +14,12 @@ MqttBridge::MqttBridge(const Config& config) :
     config_(config),
     mqttClient_(std::make_unique<MosquittoMqttClient>(config.Mqtt())),
     transport_(CreateTransport(config.Transport().Type(), config.Transport())),
-    mqttToTransportQueue_(),
-    transportToMqttQueue_(),
     running_(false) {
 
     mqttClient_->SetMessageCallback(
         [this](const Message& msg) {
             LOG_TRACE("Received message from MQTT on topic {}:", msg.topic, msg.json);
-            mqttToTransportQueue_.Push(msg);
+            transport_->Send(msg);
         }
     );
 
@@ -30,7 +28,7 @@ MqttBridge::MqttBridge(const Config& config) :
             LOG_TRACE("Received message from Transport: {}", msgStr);
             Message msg;
             msg.json = std::string(msgStr);
-            transportToMqttQueue_.Push(msg);
+            mqttClient_->Publish(config_.Mqtt().PublishTopic(), msg, config_.Mqtt().Qos(), config_.Mqtt().Retain());
         }
     );
 
@@ -63,25 +61,7 @@ bool MqttBridge::Start() {
 
     running_ = true;
     while (running_) {
-        Message msgFromMqtt;
-        bool mqttToTransportQueueNotEmpty = mqttToTransportQueue_.TryPop(msgFromMqtt);
-        if (mqttToTransportQueueNotEmpty) {
-            if (!transport_->Send(msgFromMqtt)) {
-                LOG_ERROR("Failed to send message from MQTT to transport");
-            }
-        }
-
-        Message msgFromTransport;
-        bool transportToMqttQueueNotEmpty = transportToMqttQueue_.TryPop(msgFromTransport);
-        if (transportToMqttQueueNotEmpty) {
-            if (!mqttClient_->Publish(config_.Mqtt().PublishTopic(), msgFromTransport, config_.Mqtt().Qos(), config_.Mqtt().Retain())) {
-                LOG_ERROR("Failed to publish message from transport to MQTT");
-            }
-        }
-
-        if (!mqttToTransportQueueNotEmpty || !transportToMqttQueueNotEmpty) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     return true;

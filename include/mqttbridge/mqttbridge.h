@@ -10,7 +10,6 @@
 #include "mqttbridge/imqttclient.h"
 #include "mqttbridge/itransport.h"
 #include "mqttbridge/config.h"
-#include "mqttbridge/blockingqueue.h"
 
 
 namespace MqttBridge {
@@ -31,8 +30,6 @@ private:
     Config config_;
     std::unique_ptr<IMqttClient> mqttClient_;
     std::unique_ptr<ITransport> transport_;
-    BlockingQueue<Message> mqttToTransportQueue_;
-    BlockingQueue<Message> transportToMqttQueue_;
     bool running_ = false;
     std::thread loopThread_;
 };
